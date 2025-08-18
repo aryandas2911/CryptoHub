@@ -14,7 +14,7 @@ export const CoinContextProvider = (props) => {
       method: "GET",
       headers: {
         accept: "application/json",
-        "x-cg-demo-api-key": "CG-WK9khGNndzthks5sUNxjuzoR",
+        "x-cg-demo-api-key": import.meta.env.VITE_CG_API_KEY,
       },
     };
 
@@ -27,13 +27,14 @@ export const CoinContextProvider = (props) => {
       .catch((err) => console.error(err));
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchAllCoin();
-  },[currency])
+  }, [currency]);
 
   const contextValue = {
-    allCoin,currency,setCurrency
+    allCoin,
+    currency,
+    setCurrency,
   };
   return (
     <CoinContext.Provider value={contextValue}>
