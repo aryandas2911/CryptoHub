@@ -1,0 +1,140 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 7vw 18px 2vw;
+    color: #ddd;
+    border-bottom: 2px solid #3c3c3c;
+    background: rgba(30, 30, 60, 0.85);
+    box-shadow: 0 4px 24px 0 rgba(121, 39, 255, 0.07);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-text {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #7927ff 0%, #2193b0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.logo-text:hover {
+    opacity: 0.8;
+}
+
+.navbar ul {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    cursor: pointer;
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: #e0e0e0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    transition: background 0.18s, color 0.18s;
+}
+
+.navbar li:hover {
+    background: rgba(121, 39, 255, 0.13);
+    color: #fff;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: max(1vw, 16px);
+}
+
+.navbar select {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 2px solid #7927ff;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.navbar select:focus {
+    border: 2px solid #2193b0;
+}
+
+.navbar option {
+    background-color: #09005c;
+    color: #fff;
+}
+
+.signup-btn {
+    padding: 10px 28px;
+    border-radius: 22px;
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(90deg, #7927ff 0%, #2193b0 100%);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #7927ff33;
+    transition: background 0.18s, transform 0.18s;
+}
+
+.signup-btn:hover {
+    background: linear-gradient(90deg, #2193b0 0%, #7927ff 100%);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.cryptohub-logo {
+    width: 38px;
+    height: 38px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 2px;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px #7927ff33;
+    background: #fff2;
+}
+
+@media (max-width: 900px) {
+    .navbar {
+        padding: 18px 3vw;
+    }
+
+    .signup-btn {
+        padding: 8px 16px;
+        font-size: 0.98rem;
+    }
+
+    .logo-text {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 16px 2vw;
+    }
+
+    .navbar ul {
+        display: none;
+    }
+
+    .logo-text {
+        font-size: 1.1rem;
+    }
+}

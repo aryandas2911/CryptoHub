@@ -1,12 +1,83 @@
-# React + Vite
+# CryptoHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive cryptocurrency dashboard built with React and Vite. Track real-time prices, view detailed coin analytics, and explore crypto news and features—all in one place.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🚀 Live crypto prices and market data
+- 📈 Interactive price charts (powered by Victory)
+- 🔍 Search and filter coins
+- 💱 Multi-currency support (USD, EUR, INR)
+- 📰 Blog and educational resources
+- 💡 Feature updates and announcements
+- 💰 Pricing plans (coming soon)
+- 🌙 Modern, glassmorphic UI with dark theme
+- 📱 Fully responsive for mobile and desktop
 
-## Expanding the ESLint configuration
+## Pages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Home:** Hero section, search, trending coins, and market overview
+- **Coin:** Detailed coin analytics, chart, and info
+- **Pricing:** User-focused plans (sample, coming soon)
+- **Blog:** Crypto news and beginner guides
+- **Features:** Updates and upcoming features
+
+## Getting Started
+
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/KaranUnique/CryptoHub.git
+   cd CryptoHub
+   ```
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+3. **Start the development server:**
+   ```sh
+   npm run dev
+   ```
+4. **Open in your browser:**
+   Visit [http://localhost:5173](http://localhost:5173)
+
+## Tech Stack
+
+- React 18
+- Vite
+- React Router DOM
+- Victory (charts)
+- CoinGecko API
+- Modern CSS (no Tailwind)
+
+## Folder Structure
+
+```
+Cryptoplace/
+  ├── public/
+  ├── src/
+  │   ├── assets/
+  │   ├── components/
+  │   ├── context/
+  │   ├── pages/
+  │   │   ├── Home/
+  │   │   ├── Coin/
+  │   │   ├── Pricing/
+  │   │   ├── Blog/
+  │   │   └── Features/
+  │   ├── App.jsx
+  │   └── main.jsx
+  ├── package.json
+  └── README.md
+```
+
+## API Key
+
+This project uses a demo CoinGecko API key. For production, [get your own API key](https://www.coingecko.com/en/api).
+
+## License
+
+MIT
+
+---
+
+> Designed and developed by KaranUnique
