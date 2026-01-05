@@ -33,9 +33,6 @@ const App = () => {
     });
   }, []);
 
-const App = () => {
-  const location = useLocation();
-  const isDashboard = location.pathname === "/dashboard";
 
   return (
     <ThemeProvider>
@@ -43,7 +40,7 @@ const App = () => {
         <div className="app">
           {/* Loading Spinner - will show when isLoading is true */}
           {isLoading && !isDashboard && <LoadingSpinner />}
-          
+
           {!isDashboard && <Navbar />}
           <Routes>
             <Route path="/" element={<Home />} />
