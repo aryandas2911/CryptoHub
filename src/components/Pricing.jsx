@@ -154,7 +154,7 @@ export default function Pricing() {
             transition={{ type: "spring" }}
           >
             <div className="flex flex-col lg:flex-row justify-center items-center gap-6">
-              <span className={`text-lg font-semibold ${billingCycle === 'monthly' ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+              <span className={`text-lg font-semibold ${billingCycle === 'monthly' ? 'text-gray-900 dark:dark:text-yellow-400' : 'text-gray-500 dark:text-gray-400'}`}>
                 Monthly
               </span>
 
@@ -173,7 +173,7 @@ export default function Pricing() {
                 </motion.div>
               </motion.button>
 
-              <span className={`text-lg font-semibold flex items-center gap-2 ${billingCycle === 'yearly' ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>
+              <span className={`text-lg font-semibold flex items-center gap-2 ${billingCycle === 'yearly' ? 'text-gray-900 dark:text-yellow-400' : 'text-gray-500 dark:text-gray-400'}`}>
                 Yearly
               </span>
             </div>
