@@ -31,7 +31,6 @@ import image24 from "../assets/24.png";
 import image25 from "../assets/25.png";
 import image26 from "../assets/26.png";
 import image27 from "../assets/27.png";
-import image28 from "../assets/28.png";
 import image29 from "../assets/29.png";
 import image30 from "../assets/30.png";
 
@@ -41,7 +40,7 @@ const tags = ["Premium", "Free", "Featured"];
 const badgeColors = ["#4559DC", "#22c55e", "#9d4edd", "#f59e0b"];
 
 // Real Glassnode blog posts data
-const generateBlogPosts = () => {
+export const generateBlogPosts = () => {
   return [
     {
       id: 1,
@@ -679,7 +678,7 @@ const generateBlogPosts = () => {
       excerpt: "Overview of the growing crypto insurance market: coverage options, premium trends, and risk assessment methodologies.",
       date: "Dec 14, 2025",
       readTime: "11 min read",
-      image: image28,
+      image: image27,
       category: "Market Intelligence",
       tag: "Premium",
       badgeColor: "#f59e0b",
@@ -937,5 +936,3 @@ export default function Blog() {
     </div>
   );
 }
-
-isme replace kerke complete code

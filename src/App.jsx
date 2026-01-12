@@ -11,7 +11,6 @@ import Features from "./components/Features";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import BlogDetail from "./components/BlogDetail";
-import BlogArticle from './data/BlogArticle'; // From feature/blog-system-update
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Leaderboard from "./components/Leaderboard";
 import ChangePassword from "./components/ChangePassword";
@@ -78,9 +77,8 @@ const App = () => {
               
               {/* Blog Routes - Combined from both branches */}
               <Route path="/blog" element={<Blog />} />
-              {/* New route from feature/blog-system-update */}
-              <Route path="/blog/:slug" element={<BlogArticle />} />
-              {/* Keep BlogDetail for backward compatibility */}
+              {/* Blog detail route supporting both slug and id patterns */}
+              <Route path="/blog/:slug" element={<BlogDetail />} />
               <Route path="/blog/article/:id" element={<BlogDetail />} />
               
               <Route path="/features" element={<Features />} />

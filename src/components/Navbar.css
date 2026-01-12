@@ -41,11 +41,20 @@
 /* Navbar Content Container */
 /* FORCE proper layout */
 .navbar-content {
-  display: grid;
-  grid-template-columns: auto 1fr auto; /* logo | menu | actions */
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 3px !important;
+  gap: 1rem;
   width: 100%;
+}
+
+/* Desktop layout - grid for logo, menu, actions */
+@media (min-width: 768px) {
+  .navbar-content {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* logo | menu | actions */
+    gap: 3px !important;
+  }
 }
 
 
@@ -304,12 +313,199 @@
   transform: rotate(-45deg) translate(7px, -7px);
 }
 
+/* Mobile Menu Dropdown */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 15, 0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu.open {
+  display: block;
+  max-height: 500px;
+  opacity: 1;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-nav-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 1rem 2rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  padding-left: 2.5rem;
+}
+
+.mobile-controls {
+  padding: 1rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-control-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+}
+
+.toggle-track {
+  width: 50px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 13px;
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.toggle-track.dark {
+  background: linear-gradient(135deg, #00f3ff 0%, #b026ff 100%);
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-track.dark .toggle-thumb {
+  transform: translateX(24px);
+}
+
+.mobile-auth {
+  padding: 1rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mobile-change-password {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.mobile-change-password:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.mobile-auth-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
+.mobile-auth-buttons .login-btn,
+.mobile-auth-buttons .signup-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  flex: 1;
+}
+
+.mobile-auth-buttons .login-btn {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.mobile-auth-buttons .login-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.mobile-auth-buttons .signup-btn {
+  background: linear-gradient(135deg, #00f3ff 0%, #b026ff 100%);
+  color: #000000;
+}
+
+.mobile-auth-buttons .signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 243, 255, 0.5);
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Visibility Classes */
+.desktop-only {
+  display: none;
+}
+
+.mobile-only {
+  display: flex;
+}
+
 /* ===================================
    TABLET & DESKTOP BREAKPOINTS - FIXED
    =================================== */
 
 /* Tablet (768px) - Show Desktop Menu - FIXED for iPad 768x1024 */
 @media (min-width: 768px) {
+  /* Show desktop elements, hide mobile elements */
+  .desktop-only {
+    display: flex;
+  }
+  
+  .mobile-only {
+    display: none;
+  }
+  
+  .mobile-menu {
+    display: none !important;
+  }
+  
    .navbar-menu {
     display: flex;
     flex-direction: row;
