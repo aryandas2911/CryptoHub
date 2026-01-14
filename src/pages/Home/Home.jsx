@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { FiSearch, FiArrowUpRight, FiArrowDownRight, FiFilter } from "react-icons/fi";
 import { motion } from "framer-motion";
+import MarketFilters from "../../components/MarketFilters";
 
 const Home = () => {
-  const { allCoin, currency } = useContext(CoinContext);
+  const { allCoin, filteredCoins,currency } = useContext(CoinContext);
   const [displayCoin, setDisplayCoin] = useState([]);
   const [input, setInput] = useState("");
   const [visibleCount, setVisibleCount] = useState(10);
@@ -17,24 +18,24 @@ const Home = () => {
 
   const inputHandler = (e) => {
     setInput(e.target.value);
-    if (e.target.value === "") setDisplayCoin(allCoin);
+    if (e.target.value === "") setDisplayCoin(filteredCoins);
   };
 
   const searchHandler = (e) => {
     e.preventDefault();
-    if (input && allCoin) {
+    if (input && filteredCoins) {
       setDisplayCoin(
-        allCoin.filter((item) =>
+       filteredCoins.filter((item) =>
           item.name.toLowerCase().includes(input.toLowerCase())
         )
       );
     } else {
-      setDisplayCoin(allCoin);
+      setDisplayCoin(filteredCoins);
     }
   };
 
   const applyFilters = () => {
-    let filtered = [...allCoin];
+    let filtered = [...filteredCoins];
     if (minPrice) filtered = filtered.filter((coin) => coin.current_price >= Number(minPrice));
     if (maxPrice) filtered = filtered.filter((coin) => coin.current_price <= Number(maxPrice));
     setDisplayCoin(filtered);
@@ -46,8 +47,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    setDisplayCoin(allCoin);
-  }, [allCoin]);
+    setDisplayCoin(filteredCoins);
+     setVisibleCount(10);
+  }, [filteredCoins]);
 
   return (
     <div className="home-container">
@@ -165,13 +167,18 @@ const Home = () => {
         -------------------------------------------
       */}
       <section className="market-section">
-        <div className="section-header">
-          <h2>Market Overview</h2>
-          <div className="live-indicator">
-            <span className="dot-pulse"></span>
-            Live Updates
-          </div>
-        </div>
+            <div className="section-header">
+             <h2>Market Overview</h2>
+
+              <div className="market-actions">
+                 <div className="live-indicator">
+                   <span className="dot-pulse"></span>
+                  Live Updates
+                 </div>
+
+               <MarketFilters />
+              </div>
+           </div>
 
         <div className="table-container glass-panel">
           <div className="table-header">
