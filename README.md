@@ -35,12 +35,8 @@
   - [📋 Prerequisites](#prerequisites)
   - [🔧 Environment Setup](#environment-setup)
   - [🏃 Running Locally](#running-locally)
-- [🛠️ Troubleshooting](#troubleshooting)
 - [📁 Project Structure](#project-structure)
-- [🎨 Design Philosophy](#design-philosophy)
-- [📱 Responsive Design](#responsive-design)
 - [👨‍💼 Project Leadership](#project-leadership)
-- [❓ FAQ](#faq)
 - [✴️ Issue Creation](#issue-creation)
 - [📑 Contribution Guidelines](#contribution-guidelines)
 - [🤝 Contributing](#contributing)
@@ -185,6 +181,28 @@ flowchart TD
   E --> Q[Change Password]
 ```
 
+**Market Data Lifecycle**
+
+</div>
+
+```mermaid
+graph LR
+    subgraph External
+    CG[(CoinGecko API)]
+    end
+    
+    subgraph React_App
+    CC[CoinContext]
+    H[Home Page]
+    D[Details Page]
+    end
+    
+    CG -- "JSON Data" --> CC
+    CC -- "State: coinsArray" --> H
+    CC -- "State: singleCoin" --> D
+    H -- "User Search" --> CC
+```
+
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
 <h2 id="key-features">🌟 Key Features</h2>
@@ -290,6 +308,8 @@ VITE_FIREBASE_APP_ID=your-app-id
 
 - **CoinGecko API**: Sign up at [CoinGecko API](https://www.coingecko.com/en/api)
 - **Firebase**: Go to [Firebase Console](https://console.firebase.google.com/) → Project Settings → Your Apps
+
+<h3 id="running-locally">🏃 Running Locally</h3>
 
 ### 4. Start the development server
 
