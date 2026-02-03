@@ -6,6 +6,7 @@ import { FiSearch, FiArrowUpRight, FiArrowDownRight, FiFilter } from "react-icon
 import { motion } from "framer-motion";
 import MarketFilters from "../../components/MarketFilters";
 import { Virtuoso } from 'react-virtuoso';
+import { Slice } from "lucide-react";
 
 const Home = () => {
   const { allCoin, filteredCoins, currency } = useContext(CoinContext);
@@ -15,6 +16,10 @@ const Home = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const coinPerPage =5;
+  const totalPages = Math.ceil(displayCoin.length / coinPerPage);
+  const paginatedCoins = displayCoin.slice((currentPage - 1 ) *coinPerPage, currentPage* coinPerPage);
 
   const inputHandler = (e) => {
     setInput(e.target.value);
@@ -43,6 +48,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(1)
     setDisplayCoin(filteredCoins);
   }, [filteredCoins]);
 
@@ -186,8 +192,7 @@ const Home = () => {
               /* VIRTUAL SCROLLER IMPLEMENTATION */
               <Virtuoso
                 useWindowScroll
-                data={displayCoin}
-                totalCount={displayCoin.length}
+                data={paginatedCoins}  
                 itemContent={(index, item) => (
                   <Link to={`/coin/${item.id}`} className="table-row" key={index}>
                     <div className="col-rank">{item.market_cap_rank}</div>
@@ -221,6 +226,21 @@ const Home = () => {
                 {allCoin && allCoin.length === 0 ? 'Loading crypto data...' : 'No coins found. Try adjusting your filters.'}
               </div>
             )}
+          </div>
+          <div className="pagination">
+            <button className="btn-neon-purple"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)} >
+              Prev
+            </button>
+            <span>
+              Page {currentPage} / {totalPages}
+            </span>
+            <button className="btn-neon-purple"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}>
+              Next
+            </button>
           </div>
         </div>
         
