@@ -472,30 +472,73 @@ const Contributors = () => {
                   &laquo; Prev
                 </button>
 
-                {/* Show ellipsis-style pagination if too many pages, or simple map for now */}
-                {Array.from({ length: totalPages }, (_, i) => {
-                  // Simple logic for meaningful pagination: 
-                  // Show first, last, current, and surrounds. 
-                  // For now, let's keep it simple or user might want specific style.
-                  // Given the request "pagination", a list of numbers is standard.
-                  // But if there are many contributors, this list could be long.
-                  // Assuming "6 contributor cards per page" and potentially not huge number of contributors yet,
-                  // I'll render all page numbers for simplicity unless it grows too large.
-                  // Ideally max 5-7 visible buttons. 
+                {/* Windowed/ellipsis pagination to avoid rendering a button for every page */}
+                {(() => {
+                  const visiblePages = [];
+                  const maxVisible = 7; // show all pages if totalPages is small
 
-                  // However, let's implement a simpler "Prev Page Next" if pages > 10? 
-                  // Or just render all for now as the prompt is basic.
-                  return (
-                    <button
-                      key={i + 1}
-                      className={`pagination-btn ${currentPage === i + 1 ? 'active' : ''}`}
-                      onClick={() => paginate(i + 1)}
-                    >
-                      {i + 1}
-                    </button>
-                  );
-                })}
+                  if (totalPages <= maxVisible) {
+                    // Small number of pages: render all
+                    for (let page = 1; page <= totalPages; page++) {
+                      visiblePages.push(page);
+                    }
+                  } else {
+                    const firstPage = 1;
+                    const lastPage = totalPages;
+                    const windowSize = 2; // number of pages to show on each side of current
 
+                    let start = Math.max(currentPage - windowSize, firstPage + 1);
+                    let end = Math.min(currentPage + windowSize, lastPage - 1);
+
+                    // Ensure window stays within bounds between first+1 and last-1
+                    start = Math.max(start, firstPage + 1);
+                    end = Math.min(end, lastPage - 1);
+
+                    visiblePages.push(firstPage);
+
+                    // Left ellipsis
+                    if (start > firstPage + 1) {
+                      visiblePages.push("ellipsis-left");
+                    }
+
+                    // Pages around current
+                    for (let page = start; page <= end; page++) {
+                      visiblePages.push(page);
+                    }
+
+                    // Right ellipsis
+                    if (end < lastPage - 1) {
+                      visiblePages.push("ellipsis-right");
+                    }
+
+                    visiblePages.push(lastPage);
+                  }
+
+                  return visiblePages.map((item, index) => {
+                    if (typeof item === "string") {
+                      // Ellipsis placeholder
+                      return (
+                        <span
+                          key={item + "-" + index}
+                          className="pagination-ellipsis"
+                        >
+                          &hellip;
+                        </span>
+                      );
+                    }
+
+                    const pageNumber = item;
+                    return (
+                      <button
+                        key={pageNumber}
+                        className={`pagination-btn ${currentPage === pageNumber ? "active" : ""}`}
+                        onClick={() => paginate(pageNumber)}
+                      >
+                        {pageNumber}
+                      </button>
+                    );
+                  });
+                })()}
                 <button
                   className="pagination-btn"
                   onClick={() => paginate(currentPage + 1)}
