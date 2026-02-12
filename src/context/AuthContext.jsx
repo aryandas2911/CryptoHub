@@ -14,7 +14,7 @@ import {
   signOut,
   onAuthStateChanged,
   setPersistence,
-  browserSessionPersistence,
+  browserLocalPersistence,
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }) => {
         "Firebase is not configured. Please add Firebase credentials to use authentication."
       );
     }
-    await setPersistence(auth, browserSessionPersistence);
+    await setPersistence(auth, browserLocalPersistence);
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -123,7 +123,7 @@ export const AuthProvider = ({ children }) => {
         "Firebase is not configured. Please add Firebase credentials to use authentication."
       );
     }
-    await setPersistence(auth, browserSessionPersistence);
+    await setPersistence(auth, browserLocalPersistence);
     const userCredential = await signInWithPopup(auth, googleProvider);
     const user = userCredential.user;
 
@@ -247,22 +247,24 @@ export const AuthProvider = ({ children }) => {
 
     // Listen for auth state changes
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      // Set user immediately and stop loading - don't wait for Firestore
+      setCurrentUser(user);
+      setLoading(false);
+      
       if (user) {
+        // Fetch additional user data from Firestore in the background
         try {
           const userDoc = await getDoc(doc(db, "users", user.uid));
           if (userDoc.exists()) {
             const userData = userDoc.data();
             console.log("Fetched user data from Firestore:", userData);
+            // Update user with Firestore data
             setCurrentUser({
               ...user,
               fullName: userData.fullName,
             });
-            console.log("Current user after merge:", {
-              ...user,
-              fullName: userData.fullName,
-            });
 
-            // Initialize leaderboard entry if it doesn't exist
+            // Initialize leaderboard entry if it doesn't exist (in background)
             const leaderboardDoc = await getDoc(
               doc(db, "leaderboard", user.uid)
             );
@@ -276,17 +278,12 @@ export const AuthProvider = ({ children }) => {
                 lastUpdated: serverTimestamp(),
               });
             }
-          } else {
-            setCurrentUser(user);
           }
         } catch (error) {
           console.error("Error fetching user profile:", error);
-          setCurrentUser(user);
+          // User is already set from Firebase auth, just log the error
         }
-      } else {
-        setCurrentUser(null);
       }
-      setLoading(false);
     });
     return unsubscribe;
   }, []);
@@ -310,7 +307,32 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {loading ? (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          backgroundColor: '#0a0a0f'
+        }}>
+          <div style={{
+            width: '50px',
+            height: '50px',
+            border: '4px solid rgba(0, 243, 255, 0.2)',
+            borderTop: '4px solid #00f3ff',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite'
+          }} />
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
