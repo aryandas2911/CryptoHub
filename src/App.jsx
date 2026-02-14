@@ -39,6 +39,8 @@ import FAQ from "./components/FAQ";
 import PageNotFound from "./components/PageNotFound";
 import About from "./components/About";
 import Feedback from "./pages/Feedback";
+import TrendingCoins from "@/pages/TrendingCoins";
+
 
 const App = () => {
 
@@ -130,6 +132,7 @@ const App = () => {
                 {/* Blog detail route supporting both slug and id patterns */}
                 <Route path="/blog/:slug" element={<BlogDetail />} />
                 <Route path="/blog/article/:id" element={<BlogDetail />} />
+                <Route path="/trending" element={<TrendingCoins />} />
 
                 <Route path="/features" element={<Features />} />
                 <Route path="/signup" element={<Signup />} />
