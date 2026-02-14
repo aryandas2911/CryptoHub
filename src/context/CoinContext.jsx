@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { CoinContext } from "./CoinContextInstance";
+export { CoinContext };
 
 export const CoinContextProvider = (props) => {
   const [selectedFilters, setSelectedFilters] = useState(["all"]);

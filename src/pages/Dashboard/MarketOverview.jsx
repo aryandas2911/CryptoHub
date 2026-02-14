@@ -39,6 +39,7 @@ const MarketOverview = () => {
   }, [allCoin]);
 
   const formatPrice = (price) => {
+    if (price == null) return "-";
     if (currency.symbol === "₹") {
       return `₹${price.toLocaleString()}`;
     } else if (currency.symbol === "€") {
@@ -78,8 +79,8 @@ const MarketOverview = () => {
         {/* Top Gainers */}
         <div
           className={`rounded-2xl p-8 border transition-all duration-300 hover:shadow-2xl w-full ${isDark
-              ? "bg-[#14141f] border-[rgba(255,255,255,0.08)] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
-              : "bg-white border-gray-200 shadow-xl"
+            ? "bg-[#14141f] border-[rgba(255,255,255,0.08)] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
+            : "bg-white border-gray-200 shadow-xl"
             }`}
         >
           <div className="flex items-center gap-4 mb-6">
@@ -110,8 +111,8 @@ const MarketOverview = () => {
                 key={coin.id}
                 onClick={() => navigate(`/coin/${coin.id}`)}
                 className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all duration-200 hover:scale-105 ${isDark
-                    ? "bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)]"
-                    : "bg-gray-50 hover:bg-gray-100"
+                  ? "bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)]"
+                  : "bg-gray-50 hover:bg-gray-100"
                   }`}
               >
                 <div className="flex items-center gap-3">
@@ -145,8 +146,8 @@ const MarketOverview = () => {
         {/* Top Losers */}
         <div
           className={`rounded-2xl p-8 border transition-all duration-300 hover:shadow-2xl w-full ${isDark
-              ? "bg-[#14141f] border-[rgba(255,255,255,0.08)] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
-              : "bg-white border-gray-200 shadow-xl"
+            ? "bg-[#14141f] border-[rgba(255,255,255,0.08)] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
+            : "bg-white border-gray-200 shadow-xl"
             }`}
         >
           <div className="flex items-center gap-4 mb-6">
@@ -177,8 +178,8 @@ const MarketOverview = () => {
                 key={coin.id}
                 onClick={() => navigate(`/coin/${coin.id}`)}
                 className={`flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all duration-200 hover:scale-105 ${isDark
-                    ? "bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)]"
-                    : "bg-gray-50 hover:bg-gray-100"
+                  ? "bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)]"
+                  : "bg-gray-50 hover:bg-gray-100"
                   }`}
               >
                 <div className="flex items-center gap-3">
@@ -213,8 +214,8 @@ const MarketOverview = () => {
       {/* Trending Cryptocurrencies */}
       <div
         className={`rounded-2xl p-8 border transition-all duration-300 hover:shadow-2xl w-full ${isDark
-            ? "bg-[#14141f] border-[rgba(255,255,255,0.08)] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
-            : "bg-white border-gray-200 shadow-xl"
+          ? "bg-[#14141f] border-[rgba(255,255,255,0.08)] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
+          : "bg-white border-gray-200 shadow-xl"
           }`}
       >
         <div className="flex items-center gap-4 mb-6">
@@ -245,8 +246,8 @@ const MarketOverview = () => {
               key={coin.id}
               onClick={() => navigate(`/coin/${coin.id}`)}
               className={`p-4 rounded-xl cursor-pointer transition-all duration-200 hover:scale-105 ${isDark
-                  ? "bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.03)]"
-                  : "bg-gray-50 hover:bg-gray-100"
+                ? "bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.03)]"
+                : "bg-gray-50 hover:bg-gray-100"
                 }`}
             >
               <div className="flex items-center gap-3 mb-3">
@@ -265,7 +266,7 @@ const MarketOverview = () => {
                 </div>
                 <span
                   className={
-                    coin.price_change_percentage_24h > 0
+                    (coin.price_change_percentage_24h || 0) > 0
                       ? "text-green-400"
                       : "text-red-400"
                   }
@@ -283,7 +284,7 @@ const MarketOverview = () => {
                   className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}
                 >
                   MCap: {currency.symbol}
-                  {(coin.market_cap / 1e9).toFixed(2)}B
+                  {(coin.market_cap ? (coin.market_cap / 1e9).toFixed(2) : "0.00")}B
                 </p>
               </div>
             </div>

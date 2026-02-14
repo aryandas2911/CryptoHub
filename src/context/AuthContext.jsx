@@ -21,7 +21,7 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db, googleProvider, isFirebaseConfigured } from "../firebase";
 
 const AuthContext = createContext({});
@@ -181,7 +181,7 @@ export const AuthProvider = ({ children }) => {
     if (!isFirebaseConfigured() || !auth?.currentUser) {
       throw new Error('User is not authenticated');
     }
-    
+
     await sendEmailVerification(auth.currentUser, {
       url: window.location.origin + '/dashboard',
       handleCodeInApp: false,
@@ -193,10 +193,8 @@ export const AuthProvider = ({ children }) => {
     if (!isFirebaseConfigured() || !auth?.currentUser) {
       throw new Error('User is not authenticated');
     }
-    
     await auth.currentUser.reload();
     const user = auth.currentUser;
-    
     // Update current user state with fresh data
     if (user) {
       try {
@@ -215,7 +213,7 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(user);
       }
     }
-    
+
     return user.emailVerified;
   }, []);
 
@@ -234,7 +232,7 @@ export const AuthProvider = ({ children }) => {
     if (!auth?.currentUser) return false;
 
     // check if user has email/password as a  provider
-    return auth.currentUser.providerData.some(
+    return auth.currentUser?.providerData?.some(
       (provider) => provider.providerId === 'password');
   }, []);
 
@@ -288,6 +286,33 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
+  //   update user profile function
+  const updateUserProfile = useCallback(async (uid, data) => {
+    if (!isFirebaseConfigured() || !db) {
+      throw new Error("Firebase is not configured.");
+    }
+
+    const userRef = doc(db, "users", uid);
+    await updateDoc(userRef, data);
+
+    // Update local state immediately
+    setCurrentUser((prev) => ({
+      ...prev,
+      ...data,
+      fullName: data.fullName || prev.fullName
+    }));
+
+    // If name changed, update leaderboard too
+    if (data.fullName) {
+      try {
+        const leaderboardRef = doc(db, "leaderboard", uid);
+        await updateDoc(leaderboardRef, { displayName: data.fullName });
+      } catch (error) {
+        console.error("Failed to update leaderboard name:", error);
+      }
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
       currentUser,
@@ -301,8 +326,9 @@ export const AuthProvider = ({ children }) => {
       isEmailProvider,
       sendVerificationEmail,
       reloadUserVerificationStatus,
+      updateUserProfile,
     }),
-    [currentUser, loading, signup, login, loginWithGoogle, logout, ChangePassword, resetPassword, isEmailProvider, sendVerificationEmail, reloadUserVerificationStatus]
+    [currentUser, loading, signup, login, loginWithGoogle, logout, ChangePassword, resetPassword, isEmailProvider, sendVerificationEmail, reloadUserVerificationStatus, updateUserProfile]
   );
 
   return (

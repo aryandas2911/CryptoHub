@@ -77,11 +77,11 @@ function Navbar() {
 
 
     document.addEventListener("click", handleClickOutside);
-    document.addEventListener("keydown", handleEscapeKey);
+    document.addEventListener("keydown", handleEscape);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapeKey);
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [openDropdown, isProfileOpen]);
 
@@ -125,63 +125,63 @@ function Navbar() {
 
         {/* Desktop Menu */}
         {!isDashboardPage && (
-        <ul className="navbar-menu">
-          {(currentUser ? authenticatedNavLinks : navLinks).map((link) => (
-            <li
-              key={link.label}
-              className="navbar-item"
-              onMouseEnter={() => link.dropdown && handleDropdownEnter(link.label)}
-              onMouseLeave={handleDropdownLeave}
-            >
-              {link.dropdown ? (
-                <>
-                  <span
-                    className="navbar-link dropdown-trigger"
-                    onClick={() => handleDropdownClick(link.label)}
-                    role="button"
-                    aria-expanded={openDropdown === link.label}
-                    aria-haspopup="true"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleDropdownClick(link.label);
-                      }
-                    }}
+          <ul className="navbar-menu">
+            {(currentUser ? authenticatedNavLinks : navLinks).map((link) => (
+              <li
+                key={link.label}
+                className="navbar-item"
+                onMouseEnter={() => link.dropdown && handleDropdownEnter(link.label)}
+                onMouseLeave={handleDropdownLeave}
+              >
+                {link.dropdown ? (
+                  <>
+                    <span
+                      className="navbar-link dropdown-trigger"
+                      onClick={() => handleDropdownClick(link.label)}
+                      role="button"
+                      aria-expanded={openDropdown === link.label}
+                      aria-haspopup="true"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleDropdownClick(link.label);
+                        }
+                      }}
+                    >
+                      {link.label}
+                    </span>
+                    <ul
+                      className={`dropdown-menu ${openDropdown === link.label ? 'show' : ''}`}
+                      role="menu"
+                      aria-label={`${link.label} submenu`}
+                    >
+                      {link.dropdown.map((item) => (
+                        <li key={item.to} role="none">
+                          <Link
+                            to={item.to}
+                            className="dropdown-link"
+                            role="menuitem"
+                            onClick={closeMobileMenu}
+                          >
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <Link
+                    to={link.to}
+                    className={`navbar-link ${location.pathname === link.to ? "active" : ""}`}
+                    onClick={closeMobileMenu}
                   >
                     {link.label}
-                  </span>
-                  <ul
-                    className={`dropdown-menu ${openDropdown === link.label ? 'show' : ''}`}
-                    role="menu"
-                    aria-label={`${link.label} submenu`}
-                  >
-                    {link.dropdown.map((item) => (
-                      <li key={item.to} role="none">
-                        <Link
-                          to={item.to}
-                          className="dropdown-link"
-                          role="menuitem"
-                          onClick={closeMobileMenu}
-                        >
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              ) : (
-                <Link
-                  to={link.to}
-                  className={`navbar-link ${location.pathname === link.to ? "active" : ""}`}
-                  onClick={closeMobileMenu}
-                >
-                  {link.label}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ul>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
         )}
 
         {/* Right Actions */}

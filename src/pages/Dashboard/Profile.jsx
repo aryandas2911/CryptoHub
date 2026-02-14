@@ -5,22 +5,42 @@ import { notifySuccess } from '../../utils/notify'; // Assuming this exists base
 import { FiUser, FiMail, FiPhone, FiCalendar, FiMapPin, FiActivity, FiDollarSign, FiSave, FiShield } from 'react-icons/fi';
 
 const Profile = () => {
-    const { currentUser } = useAuth();
+    const { currentUser, updateUserProfile } = useAuth();
     const { isDark } = useTheme();
     const [loading, setLoading] = useState(false);
 
     const [formData, setFormData] = useState({
-        fullName: currentUser?.displayName || currentUser?.email?.split('@')[0] || '',
-        email: currentUser?.email || '',
+        fullName: '',
+        email: '',
         gender: '',
         dateOfBirth: '',
         phoneNumber: '',
         country: '',
-        userId: currentUser?.uid || 'USER-12345678', // Read-only
+        userId: '',
         preferredCurrency: 'USD',
         tradingExperience: 'Beginner',
         riskTolerance: 'Medium'
     });
+
+    React.useEffect(() => {
+        if (currentUser) {
+            setFormData(prev => ({
+                ...prev,
+                fullName: currentUser.fullName || currentUser.displayName || '',
+                email: currentUser.email || '',
+                userId: currentUser.uid || '',
+                phoneNumber: currentUser.phoneNumber || '',
+                photoURL: currentUser.photoURL,
+                gender: currentUser.gender || '',
+                dateOfBirth: currentUser.dateOfBirth || '',
+                country: currentUser.country || '',
+                preferredCurrency: currentUser.preferredCurrency || 'USD',
+                tradingExperience: currentUser.tradingExperience || 'Beginner',
+                riskTolerance: currentUser.riskTolerance || 'Medium'
+            }));
+        }
+    }, [currentUser]);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,15 +50,17 @@ const Profile = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        // Simulate API call
-        setTimeout(() => {
-            setLoading(false);
+        try {
+            await updateUserProfile(currentUser.uid, formData);
             notifySuccess("Profile updated successfully!");
-            console.log("Profile Data Saved:", formData);
-        }, 1000);
+        } catch (error) {
+            console.error("Error updating profile:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const inputClasses = `w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200 ${isDark
@@ -115,7 +137,7 @@ const Profile = () => {
                                         value={formData.phoneNumber}
                                         onChange={handleChange}
                                         className={`${inputClasses} pl-10`}
-                                        placeholder="+1 (555) 000-0000"
+                                        placeholder="+91XXXXXXXXXX"
                                     />
                                     <FiPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                                 </div>
@@ -169,7 +191,6 @@ const Profile = () => {
                     </div>
                 </div>
 
-                {/* Trading Profile */}
                 <div className={sectionClasses}>
                     <div className="flex items-center gap-3 mb-6">
                         <div className={`p-3 rounded-lg ${isDark ? 'bg-purple-500/10 text-purple-400' : 'bg-purple-50 text-purple-600'}`}>
